@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#173d32">
+  <title>A Little Christmas Question 🎄</title>
+  <style>
+    :root {
+      --green: #173d32;
+      --green2: #245545;
+      --red: #a63838;
+      --gold: #e7bd69;
+      --cream: #fff8e9;
+      --ink: #26372f;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      font-family: Georgia, "Times New Roman", serif;
+      background:
+        radial-gradient(circle at 15% 15%, rgba(255,255,255,.16) 0 2px, transparent 3px),
+        radial-gradient(circle at 85% 28%, rgba(255,255,255,.18) 0 2px, transparent 3px),
+        linear-gradient(145deg, #102f29, #1b4a3b 55%, #102e28);
+      background-size: 90px 90px, 130px 130px, auto;
+      overflow-x: hidden;
+    }
+    .snow { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+    .flake {
+      position: absolute; top: -15px; color: white; opacity: .75;
+      animation: fall linear infinite; text-shadow: 0 0 8px white;
+    }
+    @keyframes fall { to { transform: translateY(110vh) translateX(35px) rotate(220deg); } }
+
+
+    /* Real Christmas-market footage */
+    .pyramid-video-wrap {
+      display: flex; justify-content: center; align-items: center;
+      margin: 0 auto 8px; padding: 5px;
+    }
+    .pyramid-video {
+      display: block; width: min(310px, 82vw); height: 190px;
+      object-fit: cover; object-position: center;
+      border: 2px solid #d6aa60; border-radius: 15px;
+      box-shadow: 0 0 16px rgba(231,189,105,.65), 0 7px 18px rgba(0,0,0,.18);
+      background: #173d32;
+    }
+    @media (max-width: 650px) {
+      .pyramid-video { width: min(280px, 82vw); height: 170px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .pyramid-video { /* Native video remains user-controllable if motion is reduced. */ }
+    }
+
+    .lights {
+      position: relative; z-index: 1; display: flex; justify-content: center;
+      gap: clamp(12px, 3vw, 30px); padding: 17px 10px 8px;
+    }
+    .bulb {
+      width: 12px; height: 18px; border-radius: 50% 50% 45% 45%;
+      background: #f6d77b; box-shadow: 0 0 13px 4px rgba(246,215,123,.55);
+      animation: twinkle 1.8s ease-in-out infinite alternate;
+    }
+    .bulb:nth-child(3n) { background: #ef8d87; box-shadow: 0 0 13px 4px rgba(239,141,135,.5); animation-delay: .5s; }
+    .bulb:nth-child(3n + 1) { background: #a9d8b4; box-shadow: 0 0 13px 4px rgba(169,216,180,.5); animation-delay: 1s; }
+    @keyframes twinkle { to { opacity: .48; transform: scale(.86); } }
+    main {
+      position: relative; z-index: 1; width: min(780px, calc(100% - 42px));
+      margin: 10px auto 42px; padding: clamp(18px, 3vw, 30px);
+      background: var(--cream); border: 4px solid var(--gold);
+      border-radius: 24px; box-shadow: 0 22px 65px rgba(0,0,0,.3);
+      text-align: center;
+    }
+    .eyebrow { color: var(--red); text-transform: uppercase; letter-spacing: .18em; font: 700 11px Arial, sans-serif; }
+    h1 { color: var(--green); font-size: clamp(27px, 4.3vw, 32px); line-height: 1.15; margin: 12px 0; }
+    .intro { max-width: 650px; margin: 0 auto 25px; font-size: 15px; line-height: 1.6; }
+    .market-scene { font-size: clamp(28px, 5vw, 43px); margin: 14px 0 20px; letter-spacing: 7px; }
+    .reason-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 18px 0 20px; text-align: left; }
+    details {
+      border: 1px solid #e5d3ad; border-radius: 15px; overflow: hidden;
+      background: #fffdf7; box-shadow: 0 5px 14px rgba(81,58,20,.07);
+    }
+    summary {
+      list-style: none; cursor: pointer; padding: 14px 16px; color: var(--green);
+      font-weight: bold; font-size: 17px; display: flex; align-items: center; justify-content: space-between;
+    }
+    summary::-webkit-details-marker { display: none; }
+    summary::after { content: "＋"; color: var(--red); font: 22px Arial, sans-serif; }
+    details[open] summary::after { content: "−"; }
+    .reasons { padding: 0 20px 18px 38px; margin: 0; line-height: 1.55; }
+    .reasons li { padding: 4px 0 4px 3px; }
+    .question { color: var(--green); font-size: clamp(22px, 4vw, 29px); margin: 12px 0 18px; }
+    .button-zone { min-height: 76px; display: flex; justify-content: center; align-items: center; gap: 18px; position: relative; }
+    button {
+      border: 0; border-radius: 999px; padding: 13px 29px; cursor: pointer;
+      font: bold 17px Arial, sans-serif; transition: transform .18s, box-shadow .18s;
+    }
+    button:hover { transform: translateY(-2px); box-shadow: 0 7px 15px rgba(0,0,0,.16); }
+    #yesBtn { background: var(--red); color: white; }
+    #noBtn { background: #e8dfca; color: #5a4c3d; border: 1px solid #d5c6a8; }
+    .tiny-note { font: 12px Arial, sans-serif; color: #887d6b; margin-top: 5px; }
+    #response { display: none; margin-top: 27px; padding-top: 24px; border-top: 1px dashed #d7c18f; }
+    #response.show { display: block; animation: pop .55s ease both; }
+    @keyframes pop { from { opacity: 0; transform: translateY(14px) scale(.97); } to { opacity: 1; transform: none; } }
+    .yay { color: var(--red); font-size: clamp(25px, 4vw, 35px); margin: 0 0 8px; }
+    .celebrate { font-size: 35px; animation: bounce .8s ease-in-out infinite alternate; display: inline-block; }
+    @keyframes bounce { to { transform: translateY(-9px) rotate(8deg); } }
+    .calendar-wrap { max-width: 440px; margin: 20px auto 0; padding: 18px; border-radius: 17px; background: #fffdf7; border: 1px solid #e5d3ad; }
+    .calendar-title { font-size: 22px; color: var(--green); font-weight: bold; margin-bottom: 15px; }
+    .calendar { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; }
+    .weekday { font: bold 12px Arial, sans-serif; color: #887d6b; padding: 5px 0; }
+    .day, .empty { min-height: 39px; }
+    .day {
+      border-radius: 10px; padding: 0; background: #f4eddd; color: var(--ink);
+      font: 15px Arial, sans-serif; border: 1px solid transparent;
+    }
+    .day:hover { background: #e9d7b2; }
+    .day.selected { background: var(--green); color: white; border-color: var(--green); }
+    .date-result { min-height: 25px; margin: 15px 0 0; color: var(--green); font-weight: bold; }
+    .error-toast {
+      display: none; max-width: 480px; margin: 17px auto 0; padding: 13px 16px;
+      background: #fff0ed; border: 1px solid #e8b8af; color: #8f302b;
+      border-radius: 12px; font: 14px/1.45 Arial, sans-serif;
+    }
+    .error-toast.show { display: block; animation: pop .25s ease both; }
+    .footer { margin-top: 27px; font: 12px Arial, sans-serif; color: #95866e; }
+    .confetti {
+      position: fixed; top: -20px; z-index: 5; pointer-events: none;
+      animation: confettiFall 3.5s linear forwards;
+    }
+    @keyframes confettiFall { to { transform: translateY(110vh) rotate(800deg); opacity: .9; } }
+    @media (max-width: 650px) {
+      main { margin-top: 12px; padding: 23px 17px; }
+      .reason-grid { grid-template-columns: 1fr; }
+      .button-zone { gap: 12px; }
+      button { padding: 12px 23px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="snow" id="snow" aria-hidden="true"></div>
+  <div class="lights" aria-hidden="true">
+    <span class="bulb"></span><span class="bulb"></span><span class="bulb"></span><span class="bulb"></span>
+    <span class="bulb"></span><span class="bulb"></span><span class="bulb"></span><span class="bulb"></span>
+    <span class="bulb"></span><span class="bulb"></span><span class="bulb"></span>
+  </div>
+
+  <main>
+    <div class="pyramid-video-wrap">
+      <video class="pyramid-video" autoplay muted loop playsinline preload="metadata"
+             aria-label="Christmas market in Munich at night">
+        <source src="https://media.istockphoto.com/id/1448480989/de/video/weihnachtsmarkt-bei-nacht-m%C3%BCnchen-bayern-deutschland.mp4?s=mp4-640x640-is&amp;k=20&amp;c=lRCfDt3vGDHHJFhuI1-IJDqjhtx7NoUn0w40Oe2VSFA=" type="video/mp4">
+        Your browser does not support embedded video.
+      </video>
+    </div>
+    <div class="eyebrow">A tiny festive proposal</div>
+    <!-- Replace Xyz with her name -->
+    <h1>Hi Yeyoung, will you like to go out with me on a Christmas market date?</h1>
+    <div class="market-scene" aria-hidden="true">🎄 ✨ 🏠 ☕ ❄️</div>
+    <p class="intro">
+      I have prepared a presentation (with absolutely no budget)
+      explaining why this could be a lovely idea. Please review the evidence below. 😊
+    </p>
+
+    <section class="reason-grid" aria-label="Reasons">
+      <details>
+        <summary>Why I want to date you?</summary>
+        <!-- Add, remove, or edit list items below. Add more reasons here if you like. -->
+        <ul class="reasons">
+          🪅 You are cute 😻</br>
+          🪅 You are kind 😇(I liked it when you mentioned that the person you date should treat everyone with respect irrespective of their job/status)</br>
+          🪅 You are pretty 😻</br>
+          🪅 You are courageous 💙(It was brave of you to change your field of study and move abroad to start a new life<br>
+	      🪅 You are beautiful 😻<br>
+          🪅 You are compassionate 💛(You hesitated to ask your colleagues to work after office time which shows you care about others)<br>
+    	  🪅 You are a great company 🫶<br>
+        </ul>
+      </details>
+      <details>
+        <summary>Why you should date me?</summary>
+        <!-- Add, remove, or edit list items below. -->
+        <ul class="reasons">
+          ⛄ I am funny - I'll always keep a smile on your face 🤭<br>
+          ⛄ I am a good listener and empathetic - I'll listen to your problems and help you fix them, even the small ones 😇<br>
+          ⛄ I am kind & communicative - No chance of any misunderstandings 🦄<br>
+    	  ⛄ I am a good chef - Will treat you with delicious food 😋<br>
+    	  ⛄ I am cute, aint I? 🙈<br>
+        </ul>
+      </details>
+    </section>
+
+    <h2 class="question">So… what do you say? 🎁</h2>
+    <div class="button-zone" id="buttonZone">
+      <button id="yesBtn" type="button">Yes! ❤️</button>
+      <button id="noBtn" type="button">No 🥺</button>
+    </div>
+    <div class="tiny-note">The buttons have been advised to behave.</div>
+    <div class="error-toast" id="errorToast" role="status" aria-live="polite"></div>
+
+    <section id="response" aria-live="polite">
+      <div class="celebrate">🎉 🎊 🥳</div>
+      <h2 class="yay">YAAAAY! The Christmas elves approve!</h2>
+      <p>Our next mission: choose a day for our Christmas-market adventure.</p>
+      <div class="calendar-wrap">
+        <div class="calendar-title">December 2026 🎄</div>
+        <div class="calendar" id="calendar" aria-label="December 2026 date picker"></div>
+        <p class="date-result" id="dateResult">Pick a date that works for you ✨</p>
+      </div>
+    </section>
+
+    <div class="footer">Made with a little courage, a lot of festive spirit, and probably too much hot chocolate. ☕</div>
+  </main>
+
+  <script>
+    // Gentle animated snowfall
+    const snow = document.getElementById('snow');
+    for (let i = 0; i < 34; i++) {
+      const flake = document.createElement('span');
+      flake.className = 'flake';
+      flake.textContent = Math.random() > 0.5 ? '❄' : '·';
+      flake.style.left = Math.random() * 100 + '%';
+      flake.style.fontSize = (9 + Math.random() * 14) + 'px';
+      flake.style.animationDuration = (7 + Math.random() * 12) + 's';
+      flake.style.animationDelay = (-Math.random() * 18) + 's';
+      snow.appendChild(flake);
+    }
+
+    const yesBtn = document.getElementById('yesBtn');
+    const noBtn = document.getElementById('noBtn');
+    const buttonZone = document.getElementById('buttonZone');
+    const response = document.getElementById('response');
+    const errorToast = document.getElementById('errorToast');
+
+    // The No button makes a dramatic escape whenever the pointer approaches.
+    const jokes = [
+      "ERROR 404: 'No' not found.",
+      "System alert: This button has developed commitment issues.",
+      "Oops! The reindeer moved the button. Very suspicious.",
+      "ACCESS DENIED: The Christmas elves are reviewing this decision.",
+      "Critical error: Too much cuteness detected. Please try again.",
+      "The button is buffering… possibly reconsidering its life choices."
+    ];
+    let jokeIndex = 0;
+    let noClickCount = 0;
+
+    function moveNoButton() {
+      const zone = buttonZone.getBoundingClientRect();
+      const btn = noBtn.getBoundingClientRect();
+      const maxX = Math.max(0, zone.width - btn.width);
+      const maxY = 42;
+      const x = Math.random() * maxX - maxX / 2;
+      const y = (Math.random() * maxY) - maxY / 2;
+      noBtn.style.position = 'relative';
+      noBtn.style.left = x + 'px';
+      noBtn.style.top = y + 'px';
+    }
+    noBtn.addEventListener('pointerenter', (event) => {
+      if (event.pointerType === 'mouse') moveNoButton();
+    });
+    noBtn.addEventListener('click', () => {
+      noClickCount++;
+      errorToast.textContent = jokes[jokeIndex % jokes.length];
+      jokeIndex++;
+      errorToast.classList.remove('show');
+      void errorToast.offsetWidth;
+      errorToast.classList.add('show');
+      moveNoButton();
+    });
+    noBtn.addEventListener('touchstart', () => {
+      // On touchscreens, let the first tap trigger the joke; then make it dodge.
+      if (noClickCount > 0) moveNoButton();
+    }, { passive: true });
+
+    // Confetti celebration
+    function launchConfetti() {
+      const pieces = ['🎉', '✨', '❤️', '❄️', '🎄', '⭐'];
+      for (let i = 0; i < 65; i++) {
+        const piece = document.createElement('span');
+        piece.className = 'confetti';
+        piece.textContent = pieces[Math.floor(Math.random() * pieces.length)];
+        piece.style.left = Math.random() * 100 + 'vw';
+        piece.style.fontSize = (15 + Math.random() * 18) + 'px';
+        piece.style.animationDelay = Math.random() * 1.1 + 's';
+        document.body.appendChild(piece);
+        setTimeout(() => piece.remove(), 5000);
+      }
+    }
+    yesBtn.addEventListener('click', () => {
+      response.classList.add('show');
+      launchConfetti();
+      response.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      yesBtn.textContent = 'YESSS! 🎄';
+      yesBtn.disabled = true;
+    });
+
+    // Build a real, selectable December 2026 calendar.
+    const calendar = document.getElementById('calendar');
+    const dateResult = document.getElementById('dateResult');
+    const weekdays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+    weekdays.forEach(day => {
+      const label = document.createElement('div');
+      label.className = 'weekday';
+      label.textContent = day;
+      calendar.appendChild(label);
+    });
+    const firstDay = new Date(2026, 11, 1); // December; JS months are zero-based
+    const offset = (firstDay.getDay() + 6) % 7; // Monday-first calendar
+    for (let i = 0; i < offset; i++) {
+      const blank = document.createElement('div');
+      blank.className = 'empty';
+      calendar.appendChild(blank);
+    }
+    for (let day = 1; day <= 31; day++) {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'day';
+      button.textContent = day;
+      button.setAttribute('aria-label', `December ${day}, 2026`);
+      button.addEventListener('click', () => {
+        calendar.querySelectorAll('.day').forEach(item => item.classList.remove('selected'));
+        button.classList.add('selected');
+        const chosen = new Date(2026, 11, day);
+        dateResult.textContent = `It's a date! We see each other on ${chosen.toLocaleDateString('en-GB', {
+          weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'
+        })}  💫`;
+      });
+      calendar.appendChild(button);
+    }
+  </script>
+</body>
+</html>
